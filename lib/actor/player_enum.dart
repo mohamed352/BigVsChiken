@@ -7,6 +7,3 @@ enum PlayerState{
   appearing,
   disappearing
 }
-enum PlayerDirection{
-  left,right,none
-}

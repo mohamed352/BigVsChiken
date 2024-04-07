@@ -5,11 +5,9 @@ import 'package:flame/events.dart';
 import 'package:flame/game.dart';
 import 'package:flutter/material.dart';
 import 'package:mygame/actor/player.dart';
-import 'package:mygame/actor/player_enum.dart';
 import 'package:mygame/core/manager/Character.dart';
 import 'package:mygame/core/manager/tiles_manager.dart';
 import 'package:mygame/levels/level.dart';
-
 
 class PixelAdventure extends FlameGame
     with HasKeyboardHandlerComponents, DragCallbacks {
@@ -17,9 +15,10 @@ class PixelAdventure extends FlameGame
   Color backgroundColor() => const Color(0xFF211F30);
   late final CameraComponent cam;
   late final JoystickComponent joystickComponent;
-  bool showJoyStick = true;
+  bool showJoyStick = false;
   final Player player = Player(
     character: Character.mask,
+    
   );
 
   @override
@@ -49,7 +48,7 @@ class PixelAdventure extends FlameGame
         knob: SpriteComponent(sprite: Sprite(images.fromCache('HUD/Knob.png'))),
         background: SpriteComponent(
             sprite: Sprite(images.fromCache('HUD/Joystick.png'))),
-        margin: const EdgeInsets.only(left: 32, bottom: 32));
+        margin: const EdgeInsets.only(right: 0, bottom: 32));
     add(joystickComponent);
   }
 
@@ -58,18 +57,17 @@ class PixelAdventure extends FlameGame
       case JoystickDirection.left:
       case JoystickDirection.upLeft:
       case JoystickDirection.downLeft:
-        player.playerDirection = PlayerDirection.left;
+        player.horizontalMoveSpeed = 1;
+
         break;
       case JoystickDirection.right:
       case JoystickDirection.upRight:
       case JoystickDirection.downRight:
-        player.playerDirection = PlayerDirection.right;
+        player.horizontalMoveSpeed = -1;
         break;
       default:
-        player.playerDirection = PlayerDirection.none;
+        player.horizontalMoveSpeed = 0;
         break;
     }
-    
-    
   }
 }
