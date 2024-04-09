@@ -26,7 +26,7 @@ class PixelAdventure extends FlameGame
     await images.loadAllImages();
     final myWorld = Level(levelName: TilesAssets.level1, player: player);
     cam = CameraComponent.withFixedResolution(
-        width: 640, height: 360, world: myWorld);
+        width: 540, height: 360, world: myWorld);
     cam.viewfinder.anchor = Anchor.topLeft;
     addAll([cam, myWorld]);
     if (showJoyStick) {
@@ -46,10 +46,11 @@ class PixelAdventure extends FlameGame
 
   void joyStick() {
     joystickComponent = JoystickComponent(
-        knob: SpriteComponent(sprite: Sprite(images.fromCache('HUD/Knob.png'))),
-        background: SpriteComponent(
-            sprite: Sprite(images.fromCache('HUD/Joystick.png'))),
-        margin: const EdgeInsets.only(right: 0, bottom: 32));
+      knob: SpriteComponent(sprite: Sprite(images.fromCache('HUD/Knob.png'))),
+      margin: const EdgeInsets.only(left: 32, bottom: 32),
+      background:
+          SpriteComponent(sprite: Sprite(images.fromCache('HUD/Joystick.png'))),
+    );
     add(joystickComponent);
   }
 
@@ -58,13 +59,13 @@ class PixelAdventure extends FlameGame
       case JoystickDirection.left:
       case JoystickDirection.upLeft:
       case JoystickDirection.downLeft:
-        player.horizontalMoveSpeed = 1;
+        player.horizontalMoveSpeed = -1;
 
         break;
       case JoystickDirection.right:
       case JoystickDirection.upRight:
       case JoystickDirection.downRight:
-        player.horizontalMoveSpeed = -1;
+        player.horizontalMoveSpeed = 1;
         break;
       default:
         player.horizontalMoveSpeed = 0;
