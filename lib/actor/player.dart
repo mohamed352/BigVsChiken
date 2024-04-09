@@ -5,6 +5,7 @@ import 'package:flame/components.dart';
 import 'package:mygame/actor/player_enum.dart';
 import 'package:mygame/components/collision.dart';
 import 'package:mygame/components/custom_hitbox.dart';
+import 'package:mygame/components/fruit.dart';
 import 'package:mygame/core/manager/character.dart';
 import 'package:mygame/core/utils/constant.dart';
 import 'package:mygame/core/utils/player_methods.dart';
@@ -13,7 +14,7 @@ import 'package:mygame/pixel_adventure.dart';
 import 'package:flutter/services.dart';
 
 class Player extends SpriteAnimationGroupComponent
-    with HasGameRef<PixelAdventure>, KeyboardHandler {
+    with HasGameRef<PixelAdventure>, KeyboardHandler, CollisionCallbacks {
   late final SpriteAnimation idleAnimation;
   late final SpriteAnimation runningAnimation;
   late final SpriteAnimation jumpingAnimation;
@@ -30,6 +31,12 @@ class Player extends SpriteAnimationGroupComponent
   final PlayerMethods playerMethods = PlayerMethodsImpl();
   bool isOnGround = false;
   bool hasJump = false;
+  CustomHitBox box = CustomHitBox(
+    offsetX: 10,
+    offsetY: 4,
+    width: 14,
+    height: 28,
+  );
 
   Player({
     super.position,
@@ -59,12 +66,12 @@ class Player extends SpriteAnimationGroupComponent
     return super.onKeyEvent(event, keysPressed);
   }
 
-  CustomHitBox box = CustomHitBox(
-    offsetX: 10,
-    offsetY: 4,
-    width: 14,
-    height: 28,
-  );
+  @override
+  void onCollision(Set<Vector2> intersectionPoints, PositionComponent other) {
+    if (other is Fruit) other.collidedWithPlayer();
+
+    super.onCollision(intersectionPoints, other);
+  }
 
   @override
   FutureOr<void> onLoad() {
